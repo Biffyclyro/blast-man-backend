@@ -3,6 +3,7 @@ package com.fliperama.blastmanbackend.controllers;
 import com.fliperama.blastmanbackend.entity.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +27,7 @@ public class GameController {
 
     @PostMapping("/connect")
     public Player connectPlayer(@RequestBody Player player){
-        System.out.println(player.getPlayerId());
+
 
         player.setPlayerId(UUID.randomUUID());
         playerMap.put(player.getPlayerId(), player);
@@ -44,6 +45,12 @@ public class GameController {
 
             /*template.convertAndSend("/topic/notification/connect", player);*/
         }
+    }
+
+    @MessageMapping("test") // endpoint where the client will send messages or events
+    @SendTo("/topic/notification/connect")
+    public void testar(@Payload String teste){
+        System.out.println(teste);
     }
 
 
