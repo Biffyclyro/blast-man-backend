@@ -32,8 +32,8 @@ public class GameController {
         player.setPlayerId(UUID.randomUUID());
         playerMap.put(player.getPlayerId(), player);
 
+        template.convertAndSend("/topic/notification/connect", player);
         return player;
-       /* template.convertAndSend("/topic/notification/connect", player);*/
 
     }
 
@@ -47,10 +47,11 @@ public class GameController {
         }
     }
 
-    @MessageMapping("test") // endpoint where the client will send messages or events
-    @SendTo("/topic/notification/connect")
-    public void testar(@Payload String teste){
+    @MessageMapping("/test") // endpoint where the client will send messages or events
+    @SendTo("/topic/notification/move")
+    public String testar(@Payload String teste){
         System.out.println(teste);
+        return teste;
     }
 
 

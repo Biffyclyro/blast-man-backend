@@ -15,7 +15,8 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/socket")
                 .setAllowedOrigins("http://localhost:5000")
-                .setHandshakeHandler(new DefaultHandshakeHandler());
+                .withSockJS();
+               /* .setHandshakeHandler(new DefaultHandshakeHandler());*/
 
     }
 
