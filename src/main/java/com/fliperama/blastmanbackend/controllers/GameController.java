@@ -26,7 +26,7 @@ public class GameController {
     private SimpMessagingTemplate template;
 
     @PostMapping("/connect")
-    public Player connectPlayer(@RequestBody Player player){
+    public Player connectPlayer(@RequestBody Player player) {
 
 
         player.setPlayerId(UUID.randomUUID());
@@ -38,10 +38,9 @@ public class GameController {
     }
 
 
-
     @PostMapping("/move")
-    public void movePlayer(@RequestBody Player player){
-        if (playerMap.containsKey(player.getPlayerId())){
+    public void movePlayer(@RequestBody Player player) {
+        if (playerMap.containsKey(player.getPlayerId())) {
 
             /*template.convertAndSend("/topic/notification/connect", player);*/
         }
@@ -49,13 +48,17 @@ public class GameController {
 
     @MessageMapping("/test") // endpoint where the client will send messages or events
     @SendTo("/topic/notification/move")
-    public String testar(@Payload String teste){
+    public String testar(@Payload String teste) {
         System.out.println(teste);
         return teste;
     }
 
-
-
+    @MessageMapping("/bomb") // endpoint where the client will send messages or events
+    @SendTo("/topic/notification/bomb")
+    public String setBomb(@Payload String bomb) {
+        System.out.println(bomb);
+        return bomb;
+    }
 
 
 }
