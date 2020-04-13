@@ -49,13 +49,19 @@ public class GameController {
     @MessageMapping("/test") // endpoint where the client will send messages or events
     @SendTo("/topic/notification/move")
     public String testar(@Payload String teste) {
-        System.out.println(teste);
         return teste;
     }
 
-    @MessageMapping("/bomb") // endpoint where the client will send messages or events
+    @MessageMapping("/bomb")
     @SendTo("/topic/notification/bomb")
     public String setBomb(@Payload String bomb) {
+        return bomb;
+    }
+
+    @MessageMapping("/explosion")
+    @SendTo("/topic/notification/explosion")
+    public String explode(@Payload String bomb) {
+
         System.out.println(bomb);
         return bomb;
     }
