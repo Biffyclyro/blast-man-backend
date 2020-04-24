@@ -6,10 +6,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,30 +17,42 @@ import java.util.UUID;
 public class GameController {
 
     private static final Map<UUID, Player> playerMap = new HashMap<>();
+    private static int contador = 0;
 
 
     @Autowired
     private SimpMessagingTemplate template;
 
     @PostMapping("/connect")
-    public Player connectPlayer(@RequestBody Player player) {
+    public Object connectPlayer() {
 
 
-        player.setPlayerId(UUID.randomUUID());
-        playerMap.put(player.getPlayerId(), player);
+        if(playerMap.size() < 2) {
 
-        template.convertAndSend("/topic/notification/connect", player);
-        return player;
+            var p = new Player(false, UUID.randomUUID(), true);
+
+            playerMap.put(p.getPlayerId(), p);
+
+            if(playerMap.size() == 1){
+                p.setX(32);
+                p.setY(32);
+            }else {
+                p.setX(736);
+                p.setY(544);
+            }
+
+            return p.getPlayerId().toString();
+        }else {
+            return "Sala cheia";
+        }
 
     }
 
-
-    @PostMapping("/move")
-    public void movePlayer(@RequestBody Player player) {
-        if (playerMap.containsKey(player.getPlayerId())) {
-
-            /*template.convertAndSend("/topic/notification/connect", player);*/
-        }
+    @GetMapping("/reset")
+    public void Reset(){
+        contador = 0;
+        playerMap.clear();
+        System.out.println("Servidor resetado");
     }
 
     @MessageMapping("/test") // endpoint where the client will send messages or events
@@ -52,11 +61,13 @@ public class GameController {
         return teste;
     }
 
+
     @MessageMapping("/bomb")
     @SendTo("/topic/notification/bomb")
     public String setBomb(@Payload String bomb) {
         return bomb;
     }
+
 
     @MessageMapping("/explosion")
     @SendTo("/topic/notification/explosion")
@@ -64,6 +75,23 @@ public class GameController {
 
         System.out.println(bomb);
         return bomb;
+    }
+
+    @MessageMapping("/waiting")
+    @SendTo("/topic/notification/waiting")
+    public Object waiting(@Payload String playerId) {
+
+        var p = playerMap.get(UUID.fromString(playerId) );
+        System.out.println(playerMap.keySet().toString());
+
+        if(!p.isConnected()){
+
+            p.setConnected(true);
+            contador++;
+        }
+
+        if (contador == 2) return playerMap.values();
+        else return "wait";
     }
 
 

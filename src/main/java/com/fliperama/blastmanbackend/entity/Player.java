@@ -11,4 +11,10 @@ public class Player {
     private boolean alive;
     private double x;
     private double y;
+
+    public Player(boolean connected, UUID playerId, boolean alive) {
+        this.connected = connected;
+        this.playerId = playerId;
+        this.alive = alive;
+    }
 }
