@@ -11,6 +11,7 @@ public class Player {
     private boolean alive;
     private double x;
     private double y;
+    private String skin;
 
     public Player(boolean connected, UUID playerId, boolean alive) {
         this.connected = connected;
