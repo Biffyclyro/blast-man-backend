@@ -38,7 +38,7 @@ public class GameController {
                 p.setY(32);
                 p.setSkin("cop");
             }else {
-                p.setX(736);
+                p.setX(730);
                 p.setY(544);
                 p.setSkin("rob");
             }
