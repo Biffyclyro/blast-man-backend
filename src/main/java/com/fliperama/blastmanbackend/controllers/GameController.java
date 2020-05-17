@@ -34,12 +34,12 @@ public class GameController {
             playerMap.put(p.getPlayerId(), p);
 
             if(playerMap.size() == 1){
-                p.setX(32);
-                p.setY(32);
+                p.setX(190);
+                p.setY(48);
                 p.setSkin("cop");
             }else {
-                p.setX(730);
-                p.setY(544);
+                p.setX(1148);
+                p.setY(554);
                 p.setSkin("rob");
             }
 
