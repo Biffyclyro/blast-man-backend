@@ -63,6 +63,12 @@ public class GameController {
         return teste;
     }
 
+    @MessageMapping("/atualize") // endpoint onde o player atualiza posição
+    @SendTo("/topic/notification/atualize")
+    public Object atualize(@Payload String player){
+        return player;
+    }
+
 
     @MessageMapping("/bomb")
     @SendTo("/topic/notification/bomb")
@@ -78,6 +84,15 @@ public class GameController {
         System.out.println(bomb);
         return bomb;
     }
+
+    @MessageMapping("/kill")
+    @SendTo("/topic/notification/kill")
+    public String kill(@Payload String player) {
+        System.out.println(player + "aa");
+        return player;
+    }
+
+
 
     @MessageMapping("/waiting")
     @SendTo("/topic/notification/waiting")
